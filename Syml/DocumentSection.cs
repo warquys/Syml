@@ -4,7 +4,8 @@ using YamlDotNet.Serialization.NamingConventions;
 
 namespace Syml;
 
-public class DocumentSection {
+public class DocumentSection 
+{
     public int DocumentIndex { get; internal set; }
     public string Name { get; internal set; }
     public string YamlContent { get; internal set; }
@@ -22,7 +23,7 @@ public class DocumentSection {
         }
         catch (Exception e)
         {
-            throw new SymlException($"Error occured while exporting the section '{Name}'[{DocumentIndex}] as {typeof(T).Name}: {e.Message}");
+            throw new SymlException($"Error occured while exporting the section '{Name}'[{DocumentIndex}] as {typeof(T).Name}: {e.Message}", e);
         }
     }
 
@@ -38,7 +39,7 @@ public class DocumentSection {
         }
         catch (Exception e)
         {
-            throw new SymlException($"Error occured while exporting the section '{Name}'[{DocumentIndex}] as {type.Name}: {e.Message}");
+            throw new SymlException($"Error occured while exporting the section '{Name}'[{DocumentIndex}] as {type.Name}: {e.Message}", e);
         }
     }
         
@@ -54,7 +55,7 @@ public class DocumentSection {
         }
         catch (Exception e)
         {
-            throw new SymlException($"Error occured while exporting the section '{Name}'[{DocumentIndex}]: {e.Message}");
+            throw new SymlException($"Error occured while exporting the section '{Name}'[{DocumentIndex}]: {e.Message}", e);
         }
     }
         
@@ -81,7 +82,20 @@ public class DocumentSection {
     public void Validate() => Export();
 }
 
+
+[Serializable]
 public class SymlException : Exception
 {
-    public SymlException(string message) : base(message) {}
+    public SymlException() { }
+
+    public SymlException(string message) : base(message) { }
+
+    public SymlException(string message, Exception inner) : base(message, inner) { }
+
+#if NET5_0_OR_GREATER
+    [Obsolete]
+#endif
+    protected SymlException(
+      System.Runtime.Serialization.SerializationInfo info,
+      System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Xml.Linq;
 using YamlDotNet.Core;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.TypeInspectors;
@@ -22,6 +23,10 @@ public class CommentGatheringTypeInspector : TypeInspectorSkeleton
         _innerTypeDescriptor = innerTypeDescriptor ?? throw new ArgumentNullException("innerTypeDescriptor");
     }
 
+    public override string GetEnumName(Type enumType, string name) => _innerTypeDescriptor.GetEnumName(enumType, name);
+
+    public override string GetEnumValue(object enumValue) => _innerTypeDescriptor.GetEnumValue(enumValue);
+
     public override IEnumerable<IPropertyDescriptor> GetProperties(Type type, object container)
     {
         return _innerTypeDescriptor
@@ -37,6 +42,9 @@ public class CommentGatheringTypeInspector : TypeInspectorSkeleton
         {
             _baseDescriptor = baseDescriptor;
             Name = baseDescriptor.Name;
+            AllowNulls = baseDescriptor.AllowNulls;
+            Required = baseDescriptor.Required;
+            ConverterType = baseDescriptor.ConverterType;
         }
 
         public string Name { get; }
@@ -58,6 +66,9 @@ public class CommentGatheringTypeInspector : TypeInspectorSkeleton
         }
 
         public bool CanWrite => _baseDescriptor.CanWrite;
+        public bool AllowNulls { get; }
+        public bool Required { get; }
+        public Type ConverterType { get; }
 
         public void Write(object target, object value)
         {

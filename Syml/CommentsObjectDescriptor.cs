@@ -15,7 +15,6 @@ public sealed class CommentsObjectDescriptor : IObjectDescriptor
     }
 
     public string Comment { get; }
-
     public object Value => _innerDescriptor.Value;
     public Type Type => _innerDescriptor.Type;
     public Type StaticType => _innerDescriptor.StaticType;

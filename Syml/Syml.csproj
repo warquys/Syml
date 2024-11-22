@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
         <OutputType>Library</OutputType>
         <AssemblyName>SYML</AssemblyName>
@@ -13,7 +13,7 @@
     </PropertyGroup>
     
     <ItemGroup>
-      <PackageReference Include="YamlDotNet" Version="11.2.1" />
+      <PackageReference Include="YamlDotNet" Version="16.2.0" />
     </ItemGroup>
 
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">
